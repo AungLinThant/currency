@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-app
+spec:
+  replicas: 4
+  # strategy:
+  #   type: Recreate # Default is RollingUpdate
+  selector: # -required-
+    matchLabels:
+      app: currency-app
+  template: # -required-
+    metadata:
+      labels:
+        app: currency-app
+    spec:
+      containers:
+      - name: currency-container
+        image: hashicorp/http-echo:0.2.3
+        ports:
+        - containerPort: 8080
+        args:
+          - "-text=feature available USD, SGD"
+          - -listen=:8080
